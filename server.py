@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import httpx
+import uuid
 
 app = FastAPI()
 
@@ -29,6 +30,9 @@ async def create_chatkit_session():
         if not openai_api_key:
             return {"error": "OPENAI_API_KEY not configured"}, 500
         
+        # Generate a unique user ID for this session
+        user_id = str(uuid.uuid4())
+        
         # Make direct API call to OpenAI ChatKit endpoint
         async with httpx.AsyncClient() as client:
             response = await client.post(
@@ -41,7 +45,8 @@ async def create_chatkit_session():
                 json={
                     "workflow": {
                         "id": WORKFLOW_ID
-                    }
+                    },
+                    "user": user_id
                 },
                 timeout=30.0
             )
