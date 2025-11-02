@@ -25,7 +25,7 @@ def create_chatkit_session():
     try:
         session = openai_client.chatkit.sessions.create({
             "workflow": {
-                "id": os.environ.get("wf_68e5964d772481909ad033dd7a74a2020d5d3205250119fb")
+                "id": os.environ.get("WORKFLOW_ID")
             }
         })
         return {"client_secret": session.client_secret}
