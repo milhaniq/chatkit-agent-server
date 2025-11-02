@@ -1,0 +1,13 @@
+from fastapi import FastAPI
+from openai import OpenAI
+import os
+
+app = FastAPI()
+openai = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
+@app.post("/api/chatkit/session")
+def create_chatkit_session():
+    session = openai.chatkit.sessions.create(
+        workflow={"id": "wf_YOUR_WORKFLOW_ID_HERE"}
+    )
+    return {"client_secret": session.client_secret}
